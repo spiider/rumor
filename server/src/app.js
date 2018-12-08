@@ -23,7 +23,9 @@ if (process.env.NODE_ENV === 'development') {
 } else {
   app.use((err, _req, res) => {
     logger.error(err);
-    res.status(err.status || httpStatus.INTERNAL_SERVER_ERROR).send('Internal Error');
+    res
+      .status(err.status || httpStatus.INTERNAL_SERVER_ERROR)
+      .send('Internal Error');
   });
 }
 
