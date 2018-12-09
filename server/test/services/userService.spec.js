@@ -21,7 +21,7 @@ describe('UserService', () => {
         firstName: 'aa',
         lastName: 'bb',
         password: '112',
-      })).to.be.equals('ok');
+      })).to.be.equals(null);
     });
   });
 

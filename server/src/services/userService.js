@@ -1,15 +1,20 @@
 const Joi = require('joi');
 const models = require('./../models');
+const logger = require('./../lib/logger');
 
 const userSchema = Joi.object().keys({
-  password: Joi.string(),
+  password: Joi.string().required(),
   firstName: Joi.string(),
   lastName: Joi.string(),
   email: Joi.string().email({ minDomainAtoms: 2 }),
 });
 
 const UserService = {
+  // eslint-disable-next-line consistent-return
   createUser: (body) => {
+    const {
+      firstName, lastName, email, password,
+    } = body;
     const userValidation = UserService.validateUser(body);
     if (userValidation) {
       return userValidation.message;
@@ -17,7 +22,19 @@ const UserService = {
     if (UserService.findUserByEmail(body.email)) {
       return 'User already exist';
     }
-    return 'ok';
+
+    models.User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role: 'user',
+    }).then((user) => {
+      if (user) {
+        return null;
+      }
+      return 'Something went wrong';
+    });
   },
   findUserByEmail: (email) => {
     models.User.findByEmail(email).then(user => user);

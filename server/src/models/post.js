@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     setterMethods: {
     },
-    classMethods: {
-    },
-    instanceMethods: {
-    },
   });
 
   Post.associate = (models) => {

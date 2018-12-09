@@ -36,22 +36,20 @@ module.exports = (sequelize, DataTypes) => {
         });
       },
     },
-    classMethods: {
-      findByEmail(email) {
-        return User.find({ where: { email }, limit: 1 });
-      },
-    },
-    instanceMethods: {
-      async checkPassword(password) {
-        return bcrypt.compare(password, this.hashedPassword);
-      },
-    },
   });
 
   User.associate = (models) => {
     models.User.hasMany(models.Post);
     User.belongsToMany(models.Post, { through: models.View, as: 'views' });
     User.belongsToMany(models.Post, { through: models.Vote, as: 'votes' });
+  };
+
+  User.findByEmail = function findByEmail(email) {
+    return User.find({ where: { email }, limit: 1 });
+  };
+
+  User.prototype.checkPassword = async function checkPassword(password) {
+    return bcrypt.compare(password, this.hashedPassword);
   };
 
   return User;

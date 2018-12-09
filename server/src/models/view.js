@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     setterMethods: {
     },
-    classMethods: {
-    },
-    instanceMethods: {
-    },
   });
 
   View.associate = (models) => {
