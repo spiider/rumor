@@ -5,11 +5,14 @@ import Register from '../Register'
 import Login from '../Login'
 import './App.css';
 
+
 const App = () => (
   <div>
     <header>
-      <Link to="/">Home</Link>
-      <Link to="/register">Register</Link>
+      <h1><Link to="/">Rumor</Link></h1>
+      <p>News for everyone!</p>
+      <div className="menu">
+      </div>
     </header>
 
     <main>
