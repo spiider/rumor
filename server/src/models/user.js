@@ -17,6 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     picture: DataTypes.TEXT('long'),
     role: DataTypes.ENUM('admin', 'user', 'moderator'),
     status: DataTypes.INTEGER,
+    password: {
+      type: DataTypes.VIRTUAL,
+      set(val) {
+        this.setDataValue('hashedPassword', val);
+      },
+    },
   }, {
     tableName: 'users',
     timestamps: true,
@@ -27,13 +33,6 @@ module.exports = (sequelize, DataTypes) => {
     getterMethods: {
       displayName() {
         return `${this.firstName} ${this.lastName}`;
-      },
-    },
-    setterMethods: {
-      password(password) {
-        bcrypt.hash(password, saltRounds).then((hash) => {
-          this.setDataValue('hashedPassword', hash);
-        });
       },
     },
   });
@@ -51,6 +50,10 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.checkPassword = async function checkPassword(password) {
     return bcrypt.compare(password, this.hashedPassword);
   };
+
+  User.beforeCreate(user => bcrypt.hash(user.hashedPassword, saltRounds)
+    // eslint-disable-next-line
+    .then(hash => user.hashedPassword = hash));
 
   return User;
 };
