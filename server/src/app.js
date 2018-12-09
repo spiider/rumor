@@ -2,14 +2,23 @@ const express = require('express');
 const httpStatus = require('http-status');
 const errorHandler = require('errorhandler');
 const bodyParser = require('body-parser');
+const passport = require('passport');
 const logger = require('./lib/logger');
+const auth = require('./routes/auth');
+const index = require('./routes/index');
+const user = require('./routes/user');
 
 const app = express();
 
 app.set('host', process.env.HOST || '0.0.0.0');
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.json());
+app.use(passport.initialize());
+
+app.use('/', index);
+app.use('/auth', auth);
+app.use('/user', user);
 
 app.use((_req, _res, next) => {
   const err = new Error('Not Found');

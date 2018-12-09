@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     email: {
       type: DataTypes.STRING,
+      validate: {
+        isEmail: true,
+      },
       allowNull: false,
       unique: true,
     },
@@ -12,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING(40),
     lastName: DataTypes.STRING(40),
     picture: DataTypes.TEXT('long'),
+    role: DataTypes.ENUM('admin', 'user', 'moderator'),
     status: DataTypes.INTEGER,
   }, {
     tableName: 'users',
