@@ -4,8 +4,8 @@ const UserService = require('./../services/userService');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  const newUser = UserService.createUser(req.body);
+router.post('/', async (req, res) => {
+  const newUser = await UserService.createUser(req.body);
   if (newUser) {
     return res.status(httpStatus.BAD_REQUEST).json(newUser);
   }

@@ -11,7 +11,7 @@ const userSchema = Joi.object().keys({
 
 const UserService = {
   // eslint-disable-next-line consistent-return
-  createUser: (body) => {
+  createUser: async (body) => {
     const {
       firstName, lastName, email, password,
     } = body;
@@ -19,26 +19,26 @@ const UserService = {
     if (userValidation) {
       return userValidation.message;
     }
-    if (UserService.findUserByEmail(body.email)) {
-      return 'User already exist';
-    }
-
-    models.User.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      role: 'user',
-    }).then((user) => {
-      if (user) {
-        return null;
-      }
-      return 'Something went wrong';
-    });
+    return UserService.findUserByEmail(body.email)
+      .then((user) => {
+        if (user) {
+          return 'User already exist';
+        }
+        return models.User.create({
+          firstName,
+          lastName,
+          email,
+          password,
+          role: 'user',
+        }).then((user) => {
+          if (user) {
+            return null;
+          }
+          return 'Something went wrong';
+        });
+      });
   },
-  findUserByEmail: (email) => {
-    models.User.findByEmail(email).then(user => user);
-  },
+  findUserByEmail: async email => models.User.findByEmail(email),
   validateUser: (data) => {
     const {
       firstName, lastName, email, password,
