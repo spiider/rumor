@@ -30,8 +30,8 @@ const UserService = {
           email,
           password,
           role: 'user',
-        }).then((user) => {
-          if (user) {
+        }).then((newUser) => {
+          if (newUser) {
             return null;
           }
           return 'Something went wrong';

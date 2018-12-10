@@ -1,17 +1,16 @@
 const Joi = require('joi');
 const Sequelize = require('sequelize');
 const models = require('./../models');
-const logger = require('./../lib/logger');
 
-const { Op } = Sequelize; 
+const { Op } = Sequelize;
 
 const newsSchema = Joi.object().keys({
   title: Joi.string().required(),
-  content: Joi.string(),
+  content: Joi.string().required(),
+  status: Joi.number().required(),
 });
 
 const NewsService = {
-  // eslint-disable-next-line consistent-return
   getAllNews: async (isAuth) => {
     if (isAuth) {
       return models.Post.findAll({
@@ -34,6 +33,25 @@ const NewsService = {
       id,
     },
   }).then(news => news),
+  createNews: (body, userId) => {
+    const { title, content, status } = body;
+    const result = Joi.validate({
+      title, content, status,
+    }, newsSchema);
+
+    if (result.error) {
+      return result.message;
+    }
+
+    return models.Post.create({
+      title,
+      content,
+      type: 'news',
+      votes: 0,
+      status,
+      user_id: userId,
+    }).then(() => null);
+  },
 };
 
 module.exports = NewsService;

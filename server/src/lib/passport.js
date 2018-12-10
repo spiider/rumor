@@ -32,10 +32,10 @@ passport.use(
       .findById(jwtPayload.id)
       .then((user) => {
         const {
-          firstName, lastName, email, role,
+          id, firstName, lastName, email, role,
         } = user;
         cb(null, {
-          firstName, lastName, email, role,
+          id, firstName, lastName, email, role,
         });
       }).catch(err => cb(err)),
   ),

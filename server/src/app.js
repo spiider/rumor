@@ -9,6 +9,7 @@ const auth = require('./routes/auth');
 const index = require('./routes/index');
 const user = require('./routes/user');
 const news = require('./routes/news');
+const votes = require('./routes/votes');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/', index);
 app.use('/auth', auth);
 app.use('/user', user);
 app.use('/news', news);
+app.use('/vote', votes);
 
 app.use((_req, _res, next) => {
   const err = new Error('Not Found');

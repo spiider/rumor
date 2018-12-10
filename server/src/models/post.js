@@ -9,6 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     type: DataTypes.ENUM('news', 'post'),
     votes: DataTypes.BIGINT,
     status: DataTypes.INTEGER,
+    newsId: DataTypes.INTEGER,
   }, {
     tableName: 'posts',
     timestamps: true,
