@@ -8,6 +8,7 @@ const logger = require('./lib/logger');
 const auth = require('./routes/auth');
 const index = require('./routes/index');
 const user = require('./routes/user');
+const news = require('./routes/news');
 
 const app = express();
 
@@ -19,10 +20,19 @@ app.use(cors());
 app.use(passport.initialize());
 require('./lib/passport');
 
+// we are not using session so we need do this trick
+app.use(async (req, res, next) => {
+  // eslint-disable-next-line no-shadow
+  passport.authenticate('jwt', { session: false }, (err, user) => {
+    req.isAuthed = !((err, !user));
+    next();
+  })(req, res, next);
+});
 
 app.use('/', index);
 app.use('/auth', auth);
 app.use('/user', user);
+app.use('/news', news);
 
 app.use((_req, _res, next) => {
   const err = new Error('Not Found');

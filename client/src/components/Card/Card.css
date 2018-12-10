@@ -81,7 +81,8 @@ h1 {
 
 
 .card-news .wrapper {
-  background: url(https://tvseriescritic.files.wordpress.com/2016/10/stranger-things-bicycle-lights-children.jpg) center/cover no-repeat;
+  background: url('./wheat.png') center/cover;
+
 }
 .card-news .wrapper:hover .menu-content span {
   transform: translate(-50%, -10px);

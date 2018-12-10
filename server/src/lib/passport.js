@@ -30,7 +30,13 @@ passport.use(
       secretOrKey: jwtSecret,
     }, (jwtPayload, cb) => models.User
       .findById(jwtPayload.id)
-      .then(user => cb(null, user))
-      .catch(err => cb(err)),
+      .then((user) => {
+        const {
+          firstName, lastName, email, role,
+        } = user;
+        cb(null, {
+          firstName, lastName, email, role,
+        });
+      }).catch(err => cb(err)),
   ),
 );
