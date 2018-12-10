@@ -1,12 +1,15 @@
 import React, { Fragment } from 'react'
-import { Route, Link } from 'react-router-dom'
+import { Route, Link, withRouter } from 'react-router-dom'
 import Modal from 'react-modal'
 import socketIOClient from "socket.io-client"
 import { ToastContainer, toast } from 'react-toastify';
+import { connect } from 'react-redux';
 import Home from '../Home'
 import Register from '../Register'
 import Login from '../Login'
 import UserAccount from '../UserAccount'
+import PrivateRoute from '../PrivateRoute'
+import NewsEditor from '../NewsEditor'
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,9 +26,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    const { endpoint } = this.state;
-    const socket = socketIOClient('http://localhost:8000');
-    socket.on("notfication", data => toast(data, { autoClose: 7000 }));
+    // const socket = socketIOClient('http://localhost:8000');
+    // socket.on("notfication", data => toast(data, { autoClose: 7000 }));
   }
 
   openModal() {
@@ -49,12 +51,18 @@ class App extends React.Component {
           <p>News for everyone!</p>
           <div className="menu">
           </div>
+          <Link to="/news/add">Add news</Link>
+          <div>
+
+          </div>
         </header>
 
         <main>
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/news/add" component={NewsEditor} />
+          {/* <PrivateRoute exact path="/news/add" component={NewsAdd} /> */}
           <Modal
               isOpen={this.state.modalIsOpen}
               onAfterOpen={this.afterOpenModal}
@@ -83,4 +91,11 @@ class App extends React.Component {
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  const { loggingIn } = state.authentication;
+  return {
+      loggingIn
+  };
+}
+
+export default withRouter(connect(mapStateToProps)(App));

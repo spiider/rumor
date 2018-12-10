@@ -1,7 +1,6 @@
 export const userService = {
     login,
     logout,
-    getAll,
     authHeader,
 };
 
@@ -28,15 +27,6 @@ function login(email, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('user');
-}
-
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-    return fetch(`http://localhost:3001/users`, requestOptions).then(handleResponse);
 }
 
 function handleResponse(response) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { login, logout } from '../../actions/user';
 
@@ -50,6 +51,7 @@ class Login extends React.Component {
                             <div className="help-block">Password is required</div>
                         }
                     </div>
+                    <button className="btn btn-primary">Login</button>
                 </form>
             </div>
         );
@@ -68,4 +70,4 @@ const mapDispatchToProps = dispatch =>
       logout,
     }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

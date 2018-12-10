@@ -11,7 +11,7 @@ export const login = (email, password) => {
             .then(
                 user => { 
                     dispatch(success(user));
-                    push('/');
+                    dispatch(push('/'));
                 },
                 error => {
                     dispatch(failure(error));
