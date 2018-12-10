@@ -2,11 +2,14 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
+import throlttle from 'lodash/throttle';
 import rootReducer from '../reducers'
+import { loadState, saveState } from './localStorage'
 
+const persistedState = loadState();
+console.log(persistedState)
 export const history = createHistory()
 
-const initialState = {}
 const enhancers = []
 const middleware = [thunk, routerMiddleware(history)]
 
@@ -23,8 +26,16 @@ const composedEnhancers = compose(
   ...enhancers
 )
 
-export default createStore(
+const store = createStore(
   connectRouter(history)(rootReducer),
-  initialState,
-  composedEnhancers
+  persistedState,
+  composedEnhancers,
 )
+console.log(store.getState())
+store.subscribe(throlttle(() => {
+  saveState({
+    authentication: store.getState().authentication,
+  });
+}, 1000));
+
+export default store;

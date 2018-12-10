@@ -8,7 +8,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={props =>
-        rest.loggingIn ? (
+        rest.loggedIn ? (
           <Component {...props} />
         ) : (
           <Redirect
@@ -24,9 +24,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
 }
 
 const mapStateToProps = (state) => {
-  const { loggingIn } = state.authentication;
+  const { loggedIn } = state.authentication;
   return {
-      loggingIn
+    loggedIn
   };
 }
 

@@ -1,5 +1,5 @@
 header {
-  height: 119px;
+  height: 139px;
   margin: 0;
   background: #fdfdfd;
 }
@@ -31,9 +31,20 @@ header p {
 
 header .menu {
   position: relative;
-  height: 1px;
+  height: 45px;
   margin: 0;
   background: #3cc091;
+  padding: 10px;
+}
+
+header .menu a {
+  color: #000;
+  padding-right: 10px;
+  text-align: right;
+}
+
+header .menu .right {
+  float: right;
 }
 
 main {

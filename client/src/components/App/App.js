@@ -14,8 +14,8 @@ import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 
 class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       modalIsOpen: false,
     };
@@ -23,6 +23,7 @@ class App extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.userLogin = this.userLogin.bind(this);
   }
 
   componentDidMount() {
@@ -43,6 +44,24 @@ class App extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  userLogin() {
+    const { loggedIn } = this.props;
+    if (!loggedIn) {
+      return(
+        <Fragment>
+          <Link to="/signup">Register</Link>
+          <Link to="/login">Login</Link>
+        </Fragment>
+      )
+    }
+    return (
+      <Fragment>
+        <Link to="/news/ad">Add news</Link>}  
+        Pokemon lindo
+      </Fragment>
+    )
+  }
+
   render() {
     return (
       <Fragment>
@@ -50,8 +69,10 @@ class App extends React.Component {
           <h1><Link to="/">Rumor</Link></h1>
           <p>News for everyone!</p>
           <div className="menu">
+            <div className="right">
+              {this.userLogin()}
+            </div>
           </div>
-          <Link to="/news/add">Add news</Link>
           <div>
 
           </div>
@@ -61,8 +82,7 @@ class App extends React.Component {
           <Route exact path="/" component={Home} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/news/add" component={NewsEditor} />
-          {/* <PrivateRoute exact path="/news/add" component={NewsAdd} /> */}
+          <PrivateRoute exact path="/news/add" component={NewsEditor} />
           <Modal
               isOpen={this.state.modalIsOpen}
               onAfterOpen={this.afterOpenModal}
@@ -91,11 +111,9 @@ class App extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  const { loggingIn } = state.authentication;
-  return {
-      loggingIn
-  };
-}
+const mapStateToProps = (state) => ({
+  loggedIn: state.authentication.loggedIn,
+  displayName: `${state.authentication.user.firstName} ${state.authentication.user.lastName}`,
+});
 
 export default withRouter(connect(mapStateToProps)(App));
