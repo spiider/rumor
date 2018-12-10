@@ -17,6 +17,10 @@ const NewsService = {
         where: {
           type: 'news',
         },
+        include: [{
+          model: models.User,
+          attributes: ['firstName', 'lastName'],
+        }],
       }).then(news => news);
     }
     return models.Post.findAll({
@@ -26,6 +30,10 @@ const NewsService = {
         },
         type: 'news',
       },
+      include: [{
+        model: models.User,
+        attributes: ['firstName', 'lastName'],
+      }],
     }).then(news => news);
   },
   getNews: async id => models.Post.findOne({

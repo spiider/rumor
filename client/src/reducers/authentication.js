@@ -1,28 +1,34 @@
 import { USER } from '../constants';
 
-export default (state = { loggedIn: false, user: {} }, action) => {
+export default (state = { loggedIn: false, message: '', user: { token: '' } }, action) => {
   switch (action.type) {
-    case USER.LOGIN_REQUEST:
+    case USER.REQUEST:
+      return {
+        ...state,
+        loggedIn: false,
+        message: '',
+        user: action.user
+      };
+    case USER.SUCCESS:
       return {
         ...state,
         loggedIn: true,
+        message: '',
         user: action.user
       };
-    case USER.LOGIN_SUCCESS:
-      return {
-        ...state,
-        loggedIn: true,
-        user: action.user
-      };
-    case USER.LOGIN_FAILURE:
+    case USER.FAILURE:
       return {
         loggedIn: false,
+        message: 'Ops... Login fail.',
         user: {} 
       };
     case USER.LOGOUT:
       return {
         loggedIn: false,
-        user: {} 
+        message: '',
+        user: {
+          token: '',
+        } 
       };
     default:
       return {

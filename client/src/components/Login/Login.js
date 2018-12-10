@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
-import { login, logout } from '../../actions/user';
+import { login } from '../../actions/user';
+import './Login.css'
 
 class Login extends React.Component {
     constructor(props) {
@@ -33,41 +34,41 @@ class Login extends React.Component {
 
     render() {
         const { email, password, submitted } = this.state;
+        const { message } = this.props;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                <h2>Login</h2>
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !email ? ' has-error' : '')}>
-                        <label htmlFor="email">Email</label>
-                        <input type="text" className="form-control" name="email" value={email} onChange={this.handleChange} />
+            <div className="wrapper">
+                <div className="container">
+                    <h1>Login</h1>
+                    <form name="form" onSubmit={this.handleSubmit} className="form">
+                        {message &&
+                            <div className="help-block">{message}</div>
+                        }
+                        <input type="text" name="email" value={email} onChange={this.handleChange} placeholder="Email" />
                         {submitted && !email &&
                             <div className="help-block">Email is required</div>
                         }
-                    </div>
-                    <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} placeholder="Password" />
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }
-                    </div>
-                    <button className="btn btn-primary">Login</button>
-                </form>
+                        <button type="submit" id="login-button" className="btn btn-primary">Login</button>
+                    </form>
+                </div>
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const { loggedIn } = state.authentication;
+    const { loggedIn, message } = state.authentication || undefined;
     return {
-        loggedIn
+        loggedIn,
+        message,
     };
 }
 const mapDispatchToProps = dispatch =>
   bindActionCreators({
       login,
-      logout,
     }, dispatch)
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

@@ -4,6 +4,8 @@ import Modal from 'react-modal'
 import socketIOClient from "socket.io-client"
 import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { logout } from '../../actions/user';
 import Home from '../Home'
 import Register from '../Register'
 import Login from '../Login'
@@ -24,6 +26,7 @@ class App extends React.Component {
     this.afterOpenModal = this.afterOpenModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.userLogin = this.userLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -44,8 +47,12 @@ class App extends React.Component {
     this.setState({modalIsOpen: false});
   }
 
+  handleLogout() {
+    this.props.logout()
+  }
+
   userLogin() {
-    const { loggedIn } = this.props;
+    const { loggedIn, displayName } = this.props;
     if (!loggedIn) {
       return(
         <Fragment>
@@ -56,8 +63,9 @@ class App extends React.Component {
     }
     return (
       <Fragment>
-        <Link to="/news/ad">Add news</Link>}  
-        Pokemon lindo
+        <Link to="/news/add">Add news</Link>
+        <span>{displayName}</span> 
+        <span onClick={this.handleLogout}>Logout</span>
       </Fragment>
     )
   }
@@ -116,4 +124,9 @@ const mapStateToProps = (state) => ({
   displayName: `${state.authentication.user.firstName} ${state.authentication.user.lastName}`,
 });
 
-export default withRouter(connect(mapStateToProps)(App));
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({
+      logout,
+    }, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

@@ -14,8 +14,8 @@ passport.use(
       passwordField: 'password',
     },
     (email, password, cb) => models.User.findOne({ where: { email } })
-      .then((user) => {
-        if (!user && !user.checkPassword(password)) {
+      .then(async (user) => {
+        if (!user || !await user.checkPassword(password)) {
           return cb(null, false);
         }
         return cb(null, user);

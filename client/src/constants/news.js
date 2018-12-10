@@ -1,0 +1,5 @@
+export const NEWS = {
+  REQUEST: 'NEWS_REQUEST',
+  SUCCESS: 'NEWS_SUCCESS',
+  FAILURE: 'NEWS_FAILURE',
+};
