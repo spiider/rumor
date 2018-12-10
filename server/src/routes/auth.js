@@ -6,7 +6,7 @@ const httpStatus = require('http-status');
 const router = express.Router();
 const jwtSecret = process.env.JWT_SECRET || 'justCh3ckTh!s0ut!#';
 
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
   // eslint-disable-next-line consistent-return
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err || !user) {
@@ -20,10 +20,17 @@ router.post('/login', (req, res) => {
       if (errLogin) {
         return res.send(errLogin);
       }
-      const token = jwt.sign(user, jwtSecret);
-      return res.json({ user, token });
+      const {
+        id, email, firstName, lastName, role,
+      } = user;
+      const token = jwt.sign({
+        id, email, firstName, lastName, role,
+      }, jwtSecret);
+      return res.json({
+        id, email, firstName, lastName, role, token,
+      });
     });
-  })(req, res);
+  })(req, res, next);
 });
 
 module.exports = router;

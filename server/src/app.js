@@ -3,6 +3,7 @@ const httpStatus = require('http-status');
 const errorHandler = require('errorhandler');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cors = require('cors');
 const logger = require('./lib/logger');
 const auth = require('./routes/auth');
 const index = require('./routes/index');
@@ -14,7 +15,10 @@ app.set('host', process.env.HOST || '0.0.0.0');
 app.set('port', process.env.PORT || 3000);
 
 app.use(bodyParser.json());
+app.use(cors());
 app.use(passport.initialize());
+require('./lib/passport');
+
 
 app.use('/', index);
 app.use('/auth', auth);
