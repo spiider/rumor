@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { editNews } from '../../actions/news';
+import { newsService } from '../../services/newsService'
 import 'react-mde/lib/styles/css/react-mde-all.css';
 import './NewsEditor.css'
 
@@ -13,7 +14,7 @@ class NewsEditor extends React.Component {
     super(props);
     this.state = {
         title: '',
-        id: props.match.params.id || undefined,
+        id: undefined,
         content: '**** Start writing your news ****',
     };
     this.handleChange = this.handleChange.bind(this);
@@ -23,9 +24,19 @@ class NewsEditor extends React.Component {
   }
 
   componentDidMount() {
-    const { id } = this.state;
+    const { id } = this.props.match.params;
+    const { token } = this.props;
     if (id) {
-      
+      newsService.getOneDraft(token, id)
+        .then(draft => {
+          if (draft.id) {
+            this.setState({
+              id: draft.id,
+              title: draft.title,
+              content: draft.content,
+            });
+          }
+        });
     }
   }
 

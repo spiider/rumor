@@ -48,6 +48,15 @@ const getNews = (token, id) => {
   return fetch(`${URL}/news/${id}`, requestOptions).then(handleResponse);
 }
 
+const getOneDraft = (token, id) => {
+  const requestOptions = {
+      method: 'GET',
+      headers: authHeader(token),
+  };
+
+  return fetch(`${URL}/news/edit/${id}`, requestOptions).then(handleResponse);
+}
+
 const getComments = (id) => {
   const requestOptions = {
       method: 'GET',
@@ -64,4 +73,5 @@ export const newsService = {
   getNews,
   getComments,
   getDrafts,
+  getOneDraft,
 }
