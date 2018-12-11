@@ -31,7 +31,7 @@ class Home extends React.Component {
         )
       }
     } else {
-      return this.props.list.map((result) => <Card data={result} />)
+      return list.map((result) => <Card data={result} />)
     }
   }
 

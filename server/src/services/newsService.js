@@ -15,17 +15,58 @@ const commentSchema = Joi.object().keys({
 });
 
 const NewsService = {
-  getAllNews: async (isAuth) => {
-    if (isAuth) {
+  getDrafts: async (userId, role) => {
+    if (role === 'admin') {
       return models.Post.findAll({
         where: {
           type: 'news',
+          status: 2,
         },
         include: [{
           model: models.User,
           attributes: ['firstName', 'lastName'],
         }],
-      }).then(news => news);
+      }).then((news) => {
+        if (!news) {
+          return [];
+        }
+        return news;
+      });
+    }
+    return models.Post.findAll({
+      where: {
+        type: 'news',
+        status: 2,
+        user_id: userId,
+      },
+      include: [{
+        model: models.User,
+        attributes: ['firstName', 'lastName'],
+      }],
+    }).then((news) => {
+      if (!news) {
+        return [];
+      }
+      return news;
+    });
+  },
+  getAllNews: async (isAuth) => {
+    if (isAuth) {
+      return models.Post.findAll({
+        where: {
+          type: 'news',
+          status: 1,
+        },
+        include: [{
+          model: models.User,
+          attributes: ['firstName', 'lastName'],
+        }],
+      }).then((news) => {
+        if (!news) {
+          return [];
+        }
+        return news;
+      });
     }
     return models.Post.findAll({
       where: {
@@ -33,12 +74,18 @@ const NewsService = {
           [Op.gte]: 10,
         },
         type: 'news',
+        status: 1,
       },
       include: [{
         model: models.User,
         attributes: ['firstName', 'lastName'],
       }],
-    }).then(news => news);
+    }).then((news) => {
+      if (!news) {
+        return [];
+      }
+      return news;
+    });
   },
   getNews: async (id, isAuth) => {
     if (isAuth) {
@@ -47,7 +94,12 @@ const NewsService = {
           id,
           type: 'news',
         },
-      }).then(news => news);
+      }).then((news) => {
+        if (!news) {
+          return {};
+        }
+        return news;
+      }).catch(() => ({}));
     }
     return models.Post.findOne({
       where: {
@@ -58,19 +110,23 @@ const NewsService = {
         status: 1,
         type: 'news',
       },
-    }).then(news => news)
-      .catch(() => ({}));
+    }).then((news) => {
+      if (!news) {
+        return {};
+      }
+      return news;
+    }).catch(() => ({}));
   },
-  getComments: async id => models.Post.findOne({
+  getComments: async id => models.Post.findAll({
     where: {
-      news_id: id,
+      newsId: id,
     },
   }).then(news => news).catch(() => ([])),
-  addComment: (body, userId) => {
+  addComment: (body, userId, newsId) => {
     const content = body.comment;
     const result = Joi.validate({
       content,
-    }, newsSchema);
+    }, commentSchema);
 
     if (result.error) {
       return result.message;
@@ -78,11 +134,12 @@ const NewsService = {
 
     return models.Post.create({
       content,
-      type: 'news',
+      type: 'comment',
       votes: 0,
       status: 1,
+      newsId,
       user_id: userId,
-    }).then(() => null);
+    }).then(() => ({}));
   },
   createNews: (body, userId) => {
     const { title, content, status } = body;
@@ -123,7 +180,7 @@ const NewsService = {
       where: {
         id,
       },
-    }).then(() => null);
+    }).then(() => ({}));
   },
 };
 

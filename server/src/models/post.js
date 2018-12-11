@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Post = sequelize.define('Post', {
     title: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     content: DataTypes.TEXT,
     type: DataTypes.ENUM('news', 'post'),

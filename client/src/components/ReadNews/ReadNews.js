@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
+import Comment from '../Comment';
 import { getNews, getComments, addComment } from '../../actions/news';
 
 
@@ -19,7 +20,8 @@ class ReadNews extends React.Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    this.props.getNews(id);
+    const { token } = this.props;
+    this.props.getNews(token, id);
     this.props.getComments(id);
   }
 
@@ -30,13 +32,9 @@ class ReadNews extends React.Component {
 
   renderComments() {
     const { comments } = this.props;
-    if (comments) {
-
-    }
-    return (
-      <div>No comments yet.</div>
-    )
-
+    return (comments) ? 
+      comments.map((content) => <Comment data={content} />)
+      : <div>No comments yet.</div>;
   }
 
   handleComment(e) {
@@ -44,8 +42,9 @@ class ReadNews extends React.Component {
 
       const { comment } = this.state;
       const { token } = this.props;
+      const { id } = this.props.match.params;
       if (comment) {
-          this.props.addComment(token, comment);
+          this.props.addComment(token, comment, id);
       }
   }
 
@@ -65,7 +64,7 @@ class ReadNews extends React.Component {
         <code>
           {content}
         </code>
-        {}
+        <button>Upvote</button>
         {this.renderComments()}
         {loggedIn && this.renderCommentBox()}
       </div>
@@ -78,7 +77,7 @@ const mapStateToProps = (state) => ({
   token: state.authentication.user.token || '',
   title: state.news.news.title || '',
   content: state.news.news.content || '',
-  comment: state.news.comments,
+  comments: state.news.comments,
 });
 
 const mapDispatchToProps = dispatch =>

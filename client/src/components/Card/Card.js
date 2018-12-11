@@ -8,7 +8,7 @@ import './Card.css';
 
 library.add(faHeart)
 
-const Home = (props) => (
+const Card = (props) => (
     <div className="card-news card">
     <div className="wrapper">
       <div className="header">
@@ -32,4 +32,4 @@ const Home = (props) => (
   </div>
 )
 
-export default Home
+export default Card

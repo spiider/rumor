@@ -45,11 +45,11 @@ export const editNews = (token, title, content, id, status) => {
     function failure(error) { return { type: NEWS.EDIT_FAILURE, error } }
 }
 
-export const addComment = (token, comment) => {
+export const addComment = (token, comment, id) => {
     return dispatch => {
         dispatch(request());
 
-        newsService.addComment(token, comment)
+        newsService.addComment(token, comment, id)
             .then(() => { 
                     dispatch(success());
                     window.location.reload(); 
@@ -66,11 +66,11 @@ export const addComment = (token, comment) => {
     function failure(error) { return { type: NEWS.COMMENT_ADD_FAILURE, error } }
 }
 
-export const getNews = (id) => {
+export const getNews = (token, id) => {
     return dispatch => {
         dispatch(request());
 
-        newsService.getNews(id)
+        newsService.getNews(token, id)
             .then((oneNews) => { 
                     dispatch(success(oneNews));
                 },
