@@ -7,7 +7,6 @@ import rootReducer from '../reducers'
 import { loadState, saveState } from './localStorage'
 
 const persistedState = loadState();
-console.log(persistedState)
 export const history = createHistory()
 
 const enhancers = []
@@ -31,7 +30,7 @@ const store = createStore(
   persistedState,
   composedEnhancers,
 )
-console.log(store.getState())
+
 store.subscribe(throlttle(() => {
   saveState({
     authentication: store.getState().authentication,

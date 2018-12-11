@@ -1,5 +1,59 @@
+.editor ::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: black;
+  font-weight: 300;
+}
+.editor :-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: black;
+  opacity: 1;
+  font-weight: 300;
+}
+.editor ::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: black;
+  opacity: 1;
+  font-weight: 300;
+}
+.editor :-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: black;
+  font-weight: 300;
+}
+
 .editor {
+  position: relative;
   width: 500px;
   margin: 0 auto;
 }
 
+.editor input {
+  outline: 0;
+  border: 1px solid rgba(87, 84, 84, 0.74);
+  width: 500px;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin: 0 auto 10px auto;
+  display: block;
+  font-size: 18px;
+  color: black;
+  font-weight: 300;
+}
+
+.editor .btn {
+  appearance: none;
+  outline: 0;
+  background-color: white;
+  border: 0;
+  padding: 10px 15px;
+  color: #53e3a6;
+  border-radius: 3px;
+  width: 250px;
+  cursor: pointer;
+  font-size: 18px;
+  transition-duration: 0.25s;
+}
+
+.editor .btn:hover {
+  background-color: #f5f7f9;
+}

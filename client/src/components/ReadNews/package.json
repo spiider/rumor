@@ -1,0 +1,6 @@
+{
+  "name": "ReadNews",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./ReadNews.js"
+}

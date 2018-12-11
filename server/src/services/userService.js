@@ -1,12 +1,11 @@
 const Joi = require('joi');
 const models = require('./../models');
-const logger = require('./../lib/logger');
 
 const userSchema = Joi.object().keys({
   password: Joi.string().required(),
-  firstName: Joi.string(),
-  lastName: Joi.string(),
-  email: Joi.string().email({ minDomainAtoms: 2 }),
+  firstName: Joi.string().required(),
+  lastName: Joi.string().required(),
+  email: Joi.string().email({ minDomainAtoms: 2 }).required(),
 });
 
 const UserService = {

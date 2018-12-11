@@ -60,6 +60,28 @@ const NewsService = {
       user_id: userId,
     }).then(() => null);
   },
+  editNews: (body) => {
+    const {
+      id, title, content, status,
+    } = body;
+    const result = Joi.validate({
+      title, content, status,
+    }, newsSchema);
+
+    if (result.error) {
+      return result.message;
+    }
+    return models.Post({
+      title,
+      content,
+      status,
+    }, {
+      returning: true,
+      where: {
+        id,
+      },
+    }).then(() => null);
+  },
 };
 
 module.exports = NewsService;

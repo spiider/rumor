@@ -13,6 +13,10 @@ export default (state = { loading: true, list: [] }, action) => {
         loggedIn: false,
         list: [], 
       };
+    case NEWS.EDIT_FAILURE:
+      return {
+        message: 'something went wrong',
+      }
     default:
       return {
         ...state

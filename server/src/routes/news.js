@@ -13,9 +13,15 @@ router.post('/', passport.authenticate('jwt', { session: false }), async (req, r
   return res.json('ok');
 });
 
-router.get('/list', async (req, res) => {
-  return res.json(await NewsService.getAllNews(req.isAuthed));
+router.patch('/', passport.authenticate('jwt', { session: false }), async (req, res) => {
+  const newNews = await NewsService.editNews(req.body);
+  if (newNews) {
+    return res.status(httpStatus.BAD_REQUEST).json(newNews);
+  }
+  return res.json('ok');
 });
+
+router.get('/list', async (req, res) => res.json(await NewsService.getAllNews(req.isAuthed)));
 
 router.get('/:id', async (req, res) => res.json(await NewsService.getNews(req.params.id)));
 

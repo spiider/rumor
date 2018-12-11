@@ -51,7 +51,7 @@ class Login extends React.Component {
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }
-                        <button type="submit" id="login-button" className="btn btn-primary">Login</button>
+                        <button type="submit" id="login-button">Login</button>
                     </form>
                 </div>
             </div>
@@ -60,9 +60,8 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-    const { loggedIn, message } = state.authentication || undefined;
+    const { message } = state.authentication || undefined;
     return {
-        loggedIn,
         message,
     };
 }

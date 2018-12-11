@@ -1,5 +1,5 @@
 export function authHeader(token) {
-  return (token) ? { 'Authorization': `Bearer ${token}` } : {};
+  return (token) ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } : { 'Content-Type': 'application/json' };
 }
 
 export function handleResponse(response) {

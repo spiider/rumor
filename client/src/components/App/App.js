@@ -1,19 +1,16 @@
 import React, { Fragment } from 'react'
 import { Route, Link, withRouter } from 'react-router-dom'
-import Modal from 'react-modal'
 import socketIOClient from "socket.io-client"
-import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import { logout } from '../../actions/user';
 import Home from '../Home'
 import Register from '../Register'
 import Login from '../Login'
-import UserAccount from '../UserAccount'
 import PrivateRoute from '../PrivateRoute'
 import NewsEditor from '../NewsEditor'
+import ReadNews from '../ReadNews'
 import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -56,7 +53,7 @@ class App extends React.Component {
     if (!loggedIn) {
       return(
         <Fragment>
-          <Link to="/signup">Register</Link>
+          <Link to="/register">Register</Link>
           <Link to="/login">Login</Link>
         </Fragment>
       )
@@ -64,6 +61,7 @@ class App extends React.Component {
     return (
       <Fragment>
         <Link to="/news/add">Add news</Link>
+        <Link to="/drafts">Drafts</Link>
         <span>{displayName}</span> 
         <span onClick={this.handleLogout}>Logout</span>
       </Fragment>
@@ -75,7 +73,7 @@ class App extends React.Component {
       <Fragment>
         <header>
           <h1><Link to="/">Rumor</Link></h1>
-          <p>News for everyone!</p>
+          <p>News for every one!</p>
           <div className="menu">
             <div className="right">
               {this.userLogin()}
@@ -88,32 +86,11 @@ class App extends React.Component {
 
         <main>
           <Route exact path="/" component={Home} />
+          <Route exact path="/news/:id" component={ReadNews} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <PrivateRoute exact path="/news/add" component={NewsEditor} />
-          <Modal
-              isOpen={this.state.modalIsOpen}
-              onAfterOpen={this.afterOpenModal}
-              onRequestClose={this.closeModal}
-              className="modal"
-              overlayClassName="overlay"
-              contentLabel="Example Modal"
-            >
-
-              <h2 ref={subtitle => this.subtitle = subtitle}>Hello</h2>
-              <button onClick={this.closeModal}>close</button>
-              <div>I am a modal</div>
-              <form>
-                <input />
-                <button>tab navigation</button>
-                <button>stays</button>
-                <button>inside</button>
-                <button>the modal</button>
-              </form>
-            </Modal>
-            <UserAccount />
         </main>
-        <ToastContainer />
       </Fragment>
     )
   }

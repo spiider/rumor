@@ -2,16 +2,15 @@ import { USER } from '../constants';
 
 export default (state = {}, action) => {
   switch (action.type) {
-    case USER.GETALL_REQUEST:
+    case USER.REGISTER_REQUEST:
       return {
-        loading: true
       };
-    case USER.GETALL_SUCCESS:
+    case USER.REGISTER_SUCCESS:
       return {
-        items: action.users
       };
-    case USER.GETALL_FAILURE:
+    case USER.REGISTER_FAILURE:
       return { 
+        message: 'Can not create a account at this moment',
         error: action.error
       };
     default:
