@@ -10,6 +10,10 @@ const newsSchema = Joi.object().keys({
   status: Joi.number().required(),
 });
 
+const commentSchema = Joi.object().keys({
+  content: Joi.string().required(),
+});
+
 const NewsService = {
   getAllNews: async (isAuth) => {
     if (isAuth) {
@@ -25,8 +29,8 @@ const NewsService = {
     }
     return models.Post.findAll({
       where: {
-        [Op.lte]: {
-          votes: 10,
+        votes: {
+          [Op.gte]: 10,
         },
         type: 'news',
       },
@@ -36,11 +40,50 @@ const NewsService = {
       }],
     }).then(news => news);
   },
-  getNews: async id => models.Post.findOne({
+  getNews: async (id, isAuth) => {
+    if (isAuth) {
+      return models.Post.findOne({
+        where: {
+          id,
+          type: 'news',
+        },
+      }).then(news => news);
+    }
+    return models.Post.findOne({
+      where: {
+        id,
+        votes: {
+          [Op.gte]: 10,
+        },
+        status: 1,
+        type: 'news',
+      },
+    }).then(news => news)
+      .catch(() => ({}));
+  },
+  getComments: async id => models.Post.findOne({
     where: {
-      id,
+      news_id: id,
     },
-  }).then(news => news),
+  }).then(news => news).catch(() => ([])),
+  addComment: (body, userId) => {
+    const content = body.comment;
+    const result = Joi.validate({
+      content,
+    }, newsSchema);
+
+    if (result.error) {
+      return result.message;
+    }
+
+    return models.Post.create({
+      content,
+      type: 'news',
+      votes: 0,
+      status: 1,
+      user_id: userId,
+    }).then(() => null);
+  },
   createNews: (body, userId) => {
     const { title, content, status } = body;
     const result = Joi.validate({

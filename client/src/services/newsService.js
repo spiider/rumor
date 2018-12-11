@@ -20,7 +20,37 @@ const editNews = (token, title, content, id, status) => {
   return fetch(`${URL}/news`, requestOptions).then(handleResponse);
 }
 
+const addComment = (token, comment) => {
+  const requestOptions = {
+      method: 'POST',
+      headers: authHeader(token),
+      body: JSON.stringify({ comment })
+  };
+
+  return fetch(`${URL}/news/comment`, requestOptions).then(handleResponse);
+}
+
+const getNews = (id) => {
+  const requestOptions = {
+      method: 'GET',
+  };
+
+  return fetch(`${URL}/news/${id}`, requestOptions).then(handleResponse);
+}
+
+const getComments = (id) => {
+  const requestOptions = {
+      method: 'GET',
+  };
+
+  return fetch(`${URL}/news/comments/${id}`, requestOptions).then(handleResponse);
+}
+
+
 export const newsService = {
+  addComment,
   listNews,
   editNews,
+  getNews,
+  getComments,
 }

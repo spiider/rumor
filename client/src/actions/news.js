@@ -44,3 +44,64 @@ export const editNews = (token, title, content, id, status) => {
     function success() { return { type: NEWS.EDIT_SUCCESS, } }
     function failure(error) { return { type: NEWS.EDIT_FAILURE, error } }
 }
+
+export const addComment = (token, comment) => {
+    return dispatch => {
+        dispatch(request());
+
+        newsService.addComment(token, comment)
+            .then(() => { 
+                    dispatch(success());
+                    window.location.reload(); 
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: NEWS.COMMENT_ADD_REQUEST, } }
+    function success() { return { type: NEWS.COMMENT_ADD_SUCCESS, } }
+    function failure(error) { return { type: NEWS.COMMENT_ADD_FAILURE, error } }
+}
+
+export const getNews = (id) => {
+    return dispatch => {
+        dispatch(request());
+
+        newsService.getNews(id)
+            .then((oneNews) => { 
+                    dispatch(success(oneNews));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: NEWS.NEWS_REQUEST, } }
+    function success(oneNews) { return { type: NEWS.NEWS_SUCCESS, oneNews} }
+    function failure(error) { return { type: NEWS.NEWS_FAILURE, error } }
+}
+
+export const getComments = (id) => {
+    return dispatch => {
+        dispatch(request());
+
+        newsService.getComments(id)
+            .then((comments) => { 
+                    dispatch(success(comments));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: NEWS.COMMENT_REQUEST, } }
+    function success(comments) { return { type: NEWS.COMMENT_SUCCESS, comments} }
+    function failure(error) { return { type: NEWS.COMMENT_FAILURE, error } }
+}

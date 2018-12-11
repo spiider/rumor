@@ -10,6 +10,7 @@ import Login from '../Login'
 import PrivateRoute from '../PrivateRoute'
 import NewsEditor from '../NewsEditor'
 import ReadNews from '../ReadNews'
+import { URL } from '../../constants';
 import './App.css';
 
 class App extends React.Component {
@@ -27,8 +28,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // const socket = socketIOClient('http://localhost:8000');
-    // socket.on("notfication", data => toast(data, { autoClose: 7000 }));
+    const socket = socketIOClient(URL);
+    socket.on("news", data => console.log(data));
   }
 
   openModal() {
