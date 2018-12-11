@@ -24,6 +24,27 @@ export const listNews = (token) => {
     function failure(error) { return { type: NEWS.FAILURE, error } }
 }
 
+export const getDrafts = (token) => {
+    return dispatch => {
+        dispatch(request());
+
+        newsService.getDrafts(token)
+            .then(
+                drafts => { 
+                    dispatch(success(drafts));
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request() { return { type: NEWS.DRAFT_REQUEST, } }
+    function success(drafts) { return { type: NEWS.DRAFT_SUCCESS, drafts } }
+    function failure(error) { return { type: NEWS.DRAFT_FAILURE, error } }
+}
+
 export const editNews = (token, title, content, id, status) => {
     return dispatch => {
         dispatch(request());

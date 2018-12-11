@@ -13,13 +13,20 @@ class NewsEditor extends React.Component {
     super(props);
     this.state = {
         title: '',
-        id: undefined,
+        id: props.match.params.id || undefined,
         content: '**** Start writing your news ****',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handlePublish = this.handlePublish.bind(this);
     this.handleDraft = this.handleDraft.bind(this);
     this.handleValueChange = this.handleValueChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { id } = this.state;
+    if (id) {
+      
+    }
   }
 
   handleChange(e) {

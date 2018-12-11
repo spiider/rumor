@@ -1,6 +1,6 @@
 import { NEWS } from '../constants';
 
-export default (state = { loading: true, list: [], news: { }, comments: [] }, action) => {
+export default (state = { loading: true, list: [], news: { }, comments: [], drafts: [] }, action) => {
   switch (action.type) {
     case NEWS.SUCCESS:
       return {
@@ -8,6 +8,11 @@ export default (state = { loading: true, list: [], news: { }, comments: [] }, ac
         loading: false,
         list: action.news
       };
+    case NEWS.DRAFT_SUCCESS:
+      return {
+        ...state,
+        drafts: action.drafts,
+      }
     case NEWS.COMMENT_SUCCESS:
       return {
         ...state,

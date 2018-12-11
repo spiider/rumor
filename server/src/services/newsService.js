@@ -117,6 +117,17 @@ const NewsService = {
       return news;
     }).catch(() => ({}));
   },
+  getPost: async id => models.Post.findOne({
+    where: {
+      id,
+      type: 'news',
+    },
+  }).then((news) => {
+    if (!news) {
+      return {};
+    }
+    return news;
+  }).catch(() => ({})),
   getComments: async id => models.Post.findAll({
     where: {
       newsId: id,

@@ -10,6 +10,15 @@ const listNews = (token) => {
   return fetch(`${URL}/news/list`, requestOptions).then(handleResponse);
 }
 
+const getDrafts = (token) => {
+  const requestOptions = {
+      method: 'GET',
+      headers: authHeader(token)
+  };
+
+  return fetch(`${URL}/news/drafts`, requestOptions).then(handleResponse);
+}
+
 const editNews = (token, title, content, id, status) => {
   const requestOptions = {
       method: (!id) ? 'POST' : 'PATCH',
@@ -54,4 +63,5 @@ export const newsService = {
   editNews,
   getNews,
   getComments,
+  getDrafts,
 }

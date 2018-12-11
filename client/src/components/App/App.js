@@ -125,6 +125,7 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <PrivateRoute exact path="/news/add" component={NewsEditor} />
+            <PrivateRoute exact path="/news/:id/edit" component={NewsEditor} />
             <Route path="/news/:id" component={ReadNews} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/drafts" component={Drafts} />
