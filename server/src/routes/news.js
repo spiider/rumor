@@ -27,6 +27,6 @@ router.post('/comment/:id', passport.authenticate('jwt', { session: false }), as
 router.get('/comments/:id', async (req, res) => res.json(await NewsService.getComments(req.params.id)));
 router.get('/edit/:id', passport.authenticate('jwt', { session: false }), async (req, res) => res.json(await NewsService.getPost(req.params.id)));
 router.get('/drafts', passport.authenticate('jwt', { session: false }), async (req, res) => res.json(await NewsService.getDrafts(req.user.id, req.user.role)));
-router.get('/:id', async (req, res) => res.json(await NewsService.getNews(req.params.id, req.isAuthed)));
+router.get('/:id', async (req, res) => res.json(await NewsService.getNews(req.params.id, req.isAuthed, req.userId)));
 
 module.exports = router;

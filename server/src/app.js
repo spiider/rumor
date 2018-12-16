@@ -26,6 +26,7 @@ app.use(async (req, res, next) => {
   // eslint-disable-next-line no-shadow
   passport.authenticate('jwt', { session: false }, (err, user) => {
     req.isAuthed = !((err, !user));
+    req.userId = (!user) ? '' : user.id;
     next();
   })(req, res, next);
 });

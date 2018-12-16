@@ -1,4 +1,5 @@
 const http = require('http');
+const myEmitter = require('./lib/eventemmit');
 const app = require('./app');
 
 const server = http.createServer(app);
@@ -11,9 +12,8 @@ models.sequelize.sync().then(() => {
   server.listen(app.get('port'), () => console.log(`server running at ${app.get('host')}:${app.get('port')}`));
 
   io.on('connection', (socket) => {
-    socket.emit('notification', { userId: '', title: 'teste', message: 'banana' });
-    socket.on('my other event', (data) => {
-      console.log(data);
+    myEmitter.on('notification', (data) => {
+      socket.emit('notification', data);
     });
   });
 });

@@ -34,7 +34,7 @@ class App extends React.Component {
     const socket = socketIOClient(URL);
     socket.on('notification', data => {
       if (!data.user || data.user === userId) {
-        //this.notifyMe(data);
+        this.notifyMe(data);
       }
       // socket.emit("server", "i got it");
   });

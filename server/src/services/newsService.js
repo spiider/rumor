@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const Sequelize = require('sequelize');
+const myEmitter = require('./../lib/eventemmit')
 const models = require('./../models');
 
 const { Op } = Sequelize;
@@ -87,19 +88,37 @@ const NewsService = {
       return news;
     });
   },
-  getNews: async (id, isAuth) => {
+  getNews: async (id, isAuth, userId) => {
     if (isAuth) {
       return models.Post.findOne({
         where: {
           id,
           type: 'news',
         },
-      }).then((news) => {
+      }).then(async (news) => {
         if (!news) {
           return {};
         }
+        await models.View.findOne({
+          where: {
+            viewValue: 1,
+            user_id: userId,
+            post_id: id,
+          },
+        }).then((view) => {
+          if (!view) {
+            return models.View.create({
+              viewValue: 1,
+              user_id: userId,
+              post_id: id,
+            });
+          }
+          return null;
+        });
         return news;
-      }).catch(() => ({}));
+      }).catch((e) => {
+        console.log(e)
+      });
     }
     return models.Post.findOne({
       where: {
